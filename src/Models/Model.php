@@ -276,8 +276,6 @@ class Model
         if (!empty($this->whereAnd))
             $where .= "AND " . implode(' AND ', $this->whereAnd);
 
-        $this->debug($where);
-
         return $where;
     }
 
