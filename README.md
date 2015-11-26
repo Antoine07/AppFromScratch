@@ -8,7 +8,7 @@ Application MVC en PHP objet
 - Organisation d'un projet avec Git et Trello
 - Composer gestion des packages PHP
 
-## Programmation PHP 
+### Programmation PHP 
 - Visibilité des membres d'une classe et principe de l'encapsulation des données
 - Portée des variables d'une classe
 - Closure
@@ -26,6 +26,6 @@ Application MVC en PHP objet
  - Routing
  - gestion du buffer utilisateur ob_start (templating)
  
- ## Design Pattern
+ ### Design Pattern
  
  - Observer
