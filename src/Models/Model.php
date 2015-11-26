@@ -81,7 +81,7 @@ class Model
 
             return $this;
         } else {
-            die(sprintf('method select Model invalid argument method %s', $args));
+            throw new \RuntimeException(sprintf('method select Model invalid argument method %s', $args));
         }
     }
 
@@ -101,7 +101,9 @@ class Model
             return $this;
         }
 
-        die(sprintf('unsupported operator %s', $operator));
+        $this->debug($this->whereAnd);
+
+        throw new \RuntimeException(sprintf('unsupported operator %s', $operator));
     }
 
     public function count()
@@ -119,9 +121,10 @@ class Model
     }
 
     /**
-     * @return PDOStatement
+     * @param bool $without
+     * @return \PDOStatement
      */
-    public function get()
+    public function get($without = false)
     {
         $where = $this->buildWhere(); // factoring
         $select = $this->select;
@@ -129,17 +132,26 @@ class Model
         $this->select = '*';
         $this->whereAnd = [];
 
-        $sql = sprintf(
-            'SELECT %s FROM %s WHERE %s ORDER By %s %s LIMIT 0, %s',
-            $select,
-            "`" . $this->table . "`",
-            $where,
-            $this->order,
-            $this->orderDirection,
-            $this->limit
-        );
+        if (!$without) {
+            $sql = sprintf(
+                'SELECT %s FROM %s WHERE %s ORDER By %s %s LIMIT 0, %s',
+                $select,
+                "`" . $this->table . "`",
+                $where,
+                $this->order,
+                $this->orderDirection,
+                $this->limit
+            );
+        } else {
+            $sql = sprintf(
+                'SELECT %s FROM %s WHERE %s ',
+                $select,
+                "`" . $this->table . "`",
+                $where
+            );
+        }
 
-//        var_dump($sql);
+        $this->debug($sql);
 
         return $this->pdo->query($sql);
 
@@ -155,7 +167,7 @@ class Model
         $fields = [];
         $values = [];
 
-        foreach($data as $key => $current) {
+        foreach ($data as $key => $current) {
             $values[] = (is_numeric($current)) ? (int)$current : $this->pdo->quote($current);
 
             if (!in_array($key, $this->fillable)) continue;
@@ -172,7 +184,7 @@ class Model
             $values
         );
 
-        //var_dump($sql);
+        $this->debug($sql);
 
         return $this->pdo->query($sql);
     }
@@ -206,6 +218,8 @@ class Model
             (int)$id
         );
 
+        $this->debug($sql);
+
         return $this->pdo->query($sql);
     }
 
@@ -219,6 +233,8 @@ class Model
             $this->table,
             (int)$id
         );
+
+        $this->debug($sql);
 
         return $this->pdo->query($sql);
     }
@@ -243,7 +259,7 @@ class Model
      */
     public function find($id, $args = '*')
     {
-        $stmt = $this->select($args)->where('id', '=', $id)->get();
+        $stmt = $this->select($args)->where('id', '=', $id)->get(true);
 
         if (!$stmt) return false;
 
@@ -262,6 +278,8 @@ class Model
         if (!empty($this->whereAnd))
             $where .= "AND " . implode(' AND ', $this->whereAnd);
 
+        $this->debug($where);
+
         return $where;
     }
 
@@ -270,13 +288,19 @@ class Model
         foreach ($this->fillable as $fillable)
             if (preg_match('/' . $fillable . '\+1/', $value)) return "`$fillable`+1";
 
-        if(is_float($value)){
-           return (float) $value;
-        }elseif(is_integer($value))
-        {
-            return (int) $value;
-        }else{
+        if (is_float($value)) {
+            return (float)$value;
+        } elseif (is_integer($value)) {
+            return (int)$value;
+        } else {
             return $this->pdo->quote($value);
+        }
+    }
+
+    private function debug($string)
+    {
+        if (defined('DEBUG') && DEBUG) {
+            var_dump($string);
         }
     }
 

@@ -5,7 +5,7 @@ require_once __DIR__ . '/vendor/autoload.php';  // class d'autoload de composer
 define('SALT', '1fJxj0yZigmMNCAq');
 define('URL_SITE', "http://localhost:8000/");
 define('VALID_TIME_TOKEN', 2);
-
+define('DEBUG', false);
 
 /* ------------------------------------------------- *\
     Helpers
