@@ -1,6 +1,9 @@
 <?php namespace Controllers;
 
+use Models\Customer;
 use Models\History;
+use Models\Product;
+use Carbon\Carbon;
 
 class ProductController
 {
@@ -17,10 +20,11 @@ class ProductController
 
     public function index()
     {
-
         $history = new History;
         $histories = $history->all();
+        $customer = new Customer;
+        $product = new Product;
 
-        view('dashboard.index', compact('histories'));
+        view('dashboard.index', compact('history', 'histories', 'product', 'customer'));
     }
 }

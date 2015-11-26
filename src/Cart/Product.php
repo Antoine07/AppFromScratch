@@ -32,7 +32,7 @@ class Product
      */
     public function setName($name)
     {
-        $this->name = (is_string($name))? (string) $name: (int) $name;
+        $this->name = (is_integer($name))? (int) $name: (string) $name;
     }
 
     /**

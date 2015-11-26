@@ -2,13 +2,13 @@
 
 use Cart\Cart;
 use Models\Tag;
+use Models\User;
 use Models\Image;
 use Models\History;
 use Models\Product;
 use Models\Customer;
 use Models\Category;
 use Cart\SessionStorage;
-use Models\User;
 
 class FrontController
 {
@@ -35,8 +35,6 @@ class FrontController
         $products = $product->all();
 
         $tag = new Tag;
-
-        //var_dump($this->cart->all()); die;
 
         view('front.index', compact('products', 'image', 'tag'));
     }
@@ -80,12 +78,12 @@ class FrontController
         $rules = [
             'price'    => FILTER_VALIDATE_FLOAT,
             'quantity' => FILTER_VALIDATE_INT,
-            'name'    => FILTER_SANITIZE_INT
+            'name'     => FILTER_SANITIZE_INT
         ];
 
         $sanitize = filter_input_array(INPUT_POST, $rules);
 
-        $productCart = new \Cart\Product($sanitize['title'], $sanitize['price']);
+        $productCart = new \Cart\Product($sanitize['name'], $sanitize['price']);
 
         $this->cart->buy($productCart, $sanitize['quantity']);
 
@@ -99,7 +97,7 @@ class FrontController
 
         $this->validToken('_token');
 
-        session_start();
+        if (empty($_SESSION)) session_start();
 
         (empty($_SESSION['old'])) ?: $_SESSION['old'] = [];
         (empty($_SESSION['error'])) ?: $_SESSION['error'] = [];
@@ -221,6 +219,9 @@ class FrontController
 
     public function logout()
     {
+
+        if (empty($_SESSION)) session_start();
+
         unset($_SESSION['secu']);
 
         session_regenerate_id(true);
@@ -230,7 +231,7 @@ class FrontController
 
     public function checkLogin()
     {
-        session_start();
+        if (empty($_SESSION)) session_start();
 
         (empty($_SESSION['old'])) ?: $_SESSION['old'] = [];
         (empty($_SESSION['error'])) ?: $_SESSION['error'] = [];
@@ -275,21 +276,27 @@ class FrontController
         }
     }
 
+    /**
+     * @return array
+     * @description the name of product is a primary key of product command
+     */
     private function storage()
     {
         $storage = $this->cart->all();
         $products = [];
 
         foreach ($storage as $name => $total) {
-            $p = new Product;
-            $fetch = $p->where('title', '=', $name)->get()->fetch();
+            $pr = new Product;
+            $p = $pr->find($name); // $name is id
 
-            $products[$name]['price'] = (int)$fetch->price;
-            $products[$name]['total'] = (float)$total;
-            $products[$name]['quantity'] = (int)($total / $fetch->price);
-            $products[$name]['product_id'] = (int)$fetch->id;
+            $title = $p->title;
+            $products[$title]['price'] = (int)$p->price;
+            $products[$title]['total'] = (float)$total;
+            $products[$title]['quantity'] = (int)($total / $p->price);
+            $products[$title]['product_id'] = (int)$p->id;
 
         }
+
         return $products;
     }
 

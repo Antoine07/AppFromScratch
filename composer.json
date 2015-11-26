@@ -10,7 +10,8 @@
     "minimum-stability": "dev",
     "require": {
         "doctrine/inflector": "^1.1@dev",
-        "raccoonsoftware/slug": "dev-master"
+        "raccoonsoftware/slug": "dev-master",
+        "nesbot/carbon": "dev-master"
     },
     "autoload":{
         "classmap" : [

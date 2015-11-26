@@ -113,6 +113,7 @@ $db->exec("
     total DECIMAL(10,2),
     quantity INT UNSIGNED,
     commanded_at DATETIME,
+    status ENUM('finalized', 'unfinalized') NOT NULL DEFAULT 'unfinalized',
     PRIMARY KEY (id),
     CONSTRAINT histories_product_id_products_foreign FOREIGN KEY(product_id) REFERENCES products(id) ON DELETE CASCADE,
     CONSTRAINT histories_customer_id_users_foreign FOREIGN KEY(customer_id) REFERENCES customers(id) ON DELETE CASCADE

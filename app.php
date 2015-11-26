@@ -6,6 +6,7 @@ define('SALT', '1fJxj0yZigmMNCAq');
 define('URL_SITE', "http://localhost:8000/");
 define('VALID_TIME_TOKEN', 2);
 
+
 /* ------------------------------------------------- *\
     Helpers
 \* ------------------------------------------------- */
