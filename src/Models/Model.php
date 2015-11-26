@@ -101,8 +101,6 @@ class Model
             return $this;
         }
 
-        $this->debug($this->whereAnd);
-
         throw new \RuntimeException(sprintf('unsupported operator %s', $operator));
     }
 
