@@ -1,0 +1,89 @@
+@import "modules/mixin";
+@import "modules/variable";
+@import "modules/header";
+@import "modules/footer";
+@import "modules/button_file";
+@import "modules/paginate";
+@import "modules/nav";
+@import "modules/responsive";
+@import "modules/cart";
+
+@import url(https://fonts.googleapis.com/css?family=Inconsolata);
+
+%clearfix {
+  &:after,
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+body {
+  font-size:$font-size;
+  font-family: "Inconsolata", Andale Mono, Monaco, Monospace;
+  font-style: normal;
+  font-weight: normal;
+  color: $color-main;
+  line-height: 1.5;
+  width: 90%;
+}
+
+div.container{
+  max-width: 100%;
+}
+
+div.main {
+  margin: 90px 0 ;
+  section {
+    h1 {
+      font-size: 2rem;
+    }
+  }
+}
+
+div.info {
+  margin: 20px;
+}
+
+div.alert {
+  display: none;
+  background: #fff;
+  padding: 20px;
+  border: 20px solid #ddd;
+  font-size: 1.2em;
+  position: fixed;
+  top: 20%;
+  left: 30%;
+  z-index: 99999;
+  @include box-shadow(0px 0px 20px #000);
+  @include border-radius(10px);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a{
+  color:$color-link;
+  text-decoration: none;
+  &:hover{
+    text-decoration: underline;
+  }
+}
+
+pre {
+  line-height: 18px;
+  font-size: 13px;
+  margin: 7px 0 21px;
+  padding: 5px 10px;
+  overflow: auto;
+  background-color: #fafafa;
+  border: 1px solid #e6e6e6;
+  @include border-radius(5px);
+  @include box-shadow('0, 0, 0, 0.05');
+}
+
+.error{
+  color:#e44d26;
+}
