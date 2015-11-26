@@ -25,3 +25,7 @@ Application MVC en PHP objet
     - Héritage
  - Routing
  - gestion du buffer utilisateur ob_start (templating)
+ 
+ ## Design Pattern
+ 
+ - Observer
