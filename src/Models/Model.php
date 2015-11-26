@@ -202,7 +202,7 @@ class Model
 
             $key = key($data);
 
-            if (!in_array($key, $this->fillable)) return;
+            if (!in_array($key, $this->fillable)) continue;
 
             $sets[] = "`" . $key . "`=$value";
             next($data);
